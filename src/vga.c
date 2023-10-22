@@ -58,6 +58,12 @@ static void terminal_put_entry_at(char character, vga_color_structure color, siz
 }
 
 static void terminal_put_char(char character) {
+    if (character == '\n') {
+        terminal_column = 0;
+        terminal_row++;
+        return;
+    }
+
     terminal_put_entry_at(character, terminal_color, terminal_column, terminal_row);
     if (++terminal_column == VGA_WIDTH) {
         terminal_column = 0;

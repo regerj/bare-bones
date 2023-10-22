@@ -16,4 +16,5 @@ void kernel_main(void) {
     terminal_initialize();
 
     terminal_write_string("Hello world! -Kernel\n");
+    terminal_write_string("Newlines now work!\n");
 }
