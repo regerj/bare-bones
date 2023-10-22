@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.18.0)
 
 include(./toolchain.cmake)
 
-
 enable_language(ASM-ATT)
 
 set(MY_COMPILE_FLAGS "-std=gnu99 -ffreestanding -O2 -Wall -Wextra")

@@ -16,12 +16,20 @@ add_library(
     boot.s
 )
 
-add_executable(Timberline)
+add_executable(timberline)
 
 target_link_libraries(
-    Timberline
+    timberline
     PRIVATE
     boot 
     kernel
     vga
+)
+
+set_target_properties(
+    timberline
+    PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/lib"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/lib"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/bin"
 )
