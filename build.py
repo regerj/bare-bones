@@ -19,6 +19,11 @@ def Clean():
         shutil.rmtree("isodir")
     except:
         pass
+    
+    try:
+        shutil.rmtree("install")
+    except:
+        pass
 
 def Build():
     Clean()
@@ -49,6 +54,21 @@ def Run():
     os.mkdir("isodir/boot/grub")
     shutil.copy("./build/bin/timberline", "./isodir/boot")
     shutil.copy("./src/grub.cfg", "./isodir/boot/grub")
+    
+    os.mkdir("install")
+    
+    subprocess.run([
+        "grub2-mkrescue",
+        "-o",
+        "./install/timberline.iso",
+        "isodir"
+    ])
+    
+    subprocess.run([
+        "qemu-system-i386",
+        "-cdrom",
+        "./install/timberline.iso"
+    ])
 
 def GetArgs():
     parser = argparse.ArgumentParser(
