@@ -1,0 +1,2 @@
+add_subdirectory(stdmem)
+add_subdirectory(stdstring)

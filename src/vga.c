@@ -1,18 +1,17 @@
 #include "vga.h"
 
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#include <stdmem.h>
+#include <stdstring.h>
+
 #define VGA_TEXT_MODE_BUFFER 0xB8000
 
 /***************************************************************************
  * Internal API
 ***************************************************************************/
-
-static size_t string_length(const char *string) {
-    size_t length = 0;
-    while (string[length]) {
-        length++;
-    }
-    return length;
-}
 
 union vga_color_structure {
     uint8_t raw;
@@ -60,7 +59,10 @@ static void terminal_put_entry_at(char character, vga_color_structure color, siz
 static void terminal_put_char(char character) {
     if (character == '\n') {
         terminal_column = 0;
-        terminal_row++;
+        if (++terminal_row == VGA_HEIGHT) {
+            terminal_row--;
+            mem_copy(terminal_buffer + VGA_WIDTH, terminal_buffer, (VGA_HEIGHT - 1) * VGA_WIDTH);
+        }
         return;
     }
 
@@ -68,7 +70,8 @@ static void terminal_put_char(char character) {
     if (++terminal_column == VGA_WIDTH) {
         terminal_column = 0;
         if (++terminal_row == VGA_HEIGHT) {
-            terminal_row = 0;
+            terminal_row--;
+            mem_copy(terminal_buffer + VGA_WIDTH, terminal_buffer, (VGA_HEIGHT - 1) * VGA_WIDTH);
         }
     }
 }
@@ -86,7 +89,7 @@ static void terminal_write(const char *data, size_t size) {
 void terminal_initialize() {
     terminal_row = 0;
     terminal_column = 0;
-    terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+    terminal_color = vga_entry_color(VGA_COLOR_LIGHT_CYAN, VGA_COLOR_DARK_GREY);
     terminal_buffer = (vga_entry_structure *) VGA_TEXT_MODE_BUFFER;
     for (size_t y = 0; y < VGA_HEIGHT; y++) {
         for (size_t x = 0; x < VGA_WIDTH; x++) {

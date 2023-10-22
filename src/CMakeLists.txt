@@ -4,10 +4,22 @@ add_library(
     kernel.c
 )
 
+target_include_directories(
+    kernel
+    PUBLIC
+    .
+)
+
 add_library(
     vga
     OBJECT
     vga.c
+)
+
+target_include_directories(
+    vga
+    PUBLIC
+    .
 )
 
 add_library(
@@ -16,7 +28,20 @@ add_library(
     boot.s
 )
 
+target_include_directories(
+    boot
+    PUBLIC
+    .
+)
+
 add_executable(timberline)
+
+target_link_libraries(
+    vga
+    PRIVATE
+    stdstring
+    stdmem
+)
 
 target_link_libraries(
     timberline

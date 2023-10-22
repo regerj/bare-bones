@@ -14,3 +14,4 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${MY_COMPILE_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "-T ${CMAKE_SOURCE_DIR}/linker.ld ${CMAKE_EXE_LINKER_FLAGS}")
 
 add_subdirectory(src)
+add_subdirectory(stdlib)
